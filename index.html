@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="./style.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <script src="scripts.js"></script>
 </head>
 
 <body>
@@ -47,7 +48,7 @@
         <section id='transactions'>
             <h2 class="sr-only">Transações</h2>
 
-            <a href="#" class="button new">+ Nova transação</a>
+            <a href="#" class="button new" onclick="Modal.OpenModal()"> + Nova transação</a>
 
             <table id='data-table'>
                 <thead>
@@ -109,8 +110,8 @@
                     </div>
 
                     <div class="input-group actions">
-                        <a href="#" class="button cancel">Cancelar</a>
-                        <button>Salvar</button>
+                        <a href="#" class="button cancel" onclick="Modal.CloseModal()">Cancelar</a>
+                        <button onclick="Modal.CloseModal">Salvar</button>
                     </div>
 
                 </form>
