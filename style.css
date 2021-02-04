@@ -271,7 +271,7 @@ td.expense {
     margin-top: 0.8rem;
 }
 
-#form .input-group small {
+#form .input-group .help {
     opacity: 0.4;
 }
 
