@@ -35,6 +35,15 @@
                 </h3>
                 <p id="expenseDisplay">R$ 0,00</p>
             </div >
+
+            <div class="card safe">
+                <h3>
+                    <span> Cofre </span>    
+                    <a href="#" onclick="Modal.OpenModalSafe()"><img src="assets/cowsafe.svg" alt="Imagem de Entradas"></a>
+                </h3>
+                <p id="safeDisplay">R$ 0,00</p>
+            </div >
+                        
             <div class="card total">
                 <h3>
                     <span> Total </span>    
@@ -43,11 +52,13 @@
                 <p id="totalDisplay">R$ 0,00</p>
             </div>
         </section>
-
+        <div class="buttontransactions">
+            <a href="#" class="button new" onclick="Modal.OpenModal()"> + Nova transação</a>
+        </div>
         <section id='transactions'>
             <h2 class="sr-only">Transações</h2>
 
-            <a href="#" class="button new" onclick="Modal.OpenModal()"> + Nova transação</a>
+            <!-- <a href="#" class="button new" onclick="Modal.OpenModal()"> + Nova transação</a> -->
 
             <table id="data-table">
                 <thead>
@@ -89,6 +100,26 @@
                     <div class="input-group actions">
                         <a href="#" class="button cancel" onclick="Modal.CloseModal()">Cancelar</a>
                         <button onclick="Modal.CloseModal">Salvar</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay-safe">
+        <div class="modal">
+            <div id="form">
+                <h2>Qual valor você gostaria de reservar?</h2>
+                <form action="" onsubmit="Form.submitSafe(event)">
+                    <div class="input-group">
+                        <label class="sr-only" for="description">Valor</label>
+                        <input type="number" name="amountsafe" id="amountsafe" step="0.01" placeholder="0,00">
+                        <small class="help">Use o sinal - (negativo) para despesas e , (vírgula) para casas decimais</small>
+                    </div>
+                    <div class="input-group actions">
+                        <a href="#" class="button cancel" onclick="Modal.CloseModalSafe()">Cancelar</a>
+                        <button onclick="Modal.CloseModal">Guardar</button>
                     </div>
 
                 </form>

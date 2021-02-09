@@ -4,6 +4,12 @@ const Modal = {
     },
     CloseModal(){
         document.querySelector('.modal-overlay').classList.remove('active')
+    },
+    OpenModalSafe() {
+        document.querySelector('.modal-overlay-safe').classList.add('active')
+    },
+    CloseModalSafe(){
+        document.querySelector('.modal-overlay-safe').classList.remove('active')
     }
 }
 
@@ -133,19 +139,30 @@ const Form = {
     amount: document.querySelector('input#amount'),
     date: document.querySelector('input#date'),
 
+    // get safe values
+    moneysafe: document.querySelector('input#amountsafe'),
+
     getValues(){
         return {
             description: Form.description.value,
             amount: Form.amount.value,
-            date: Form.date.value
+            date: Form.date.value,
+            moneysafe: Form.date.value
         }
     },
 
-    validateFields() {
-        const {description, amount, date} = Form.getValues()
+    validateFields(e) {
+        const {description, amount, date, moneysafe} = Form.getValues()
         
-        if(description.trim() === "" || amount.trim() === "" || date.trim() === "") {
-            throw new Error("Por favor, preencha todos os campos")
+        if (e === true) {
+            if (moneysafe.trim() === "") {
+                throw new Error("Por favor, preencha todos os campos")
+            } 
+        }else{
+            console.log(e)
+            if(description.trim() === "" || amount.trim() === "" || date.trim() === "") {
+                throw new Error("Por favor, preencha todos os campos")
+            }
         }
     },
 
@@ -170,8 +187,7 @@ const Form = {
     },
 
     submit(event) {
-        event.preventDefault();
-
+        event.preventDefault();       
         try {
             Form.validateFields();
             const transaction = Form.formatValues();
@@ -181,6 +197,12 @@ const Form = {
         } catch (error) {
             alert(error.message)
         }
+    },
+
+    submitSafe(event) {
+        event.preventDefault();
+
+        Form.validateFields(true);
     }
 
 
