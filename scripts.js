@@ -46,7 +46,7 @@ const Transaction = {
         })
         return income;
     },
-
+    
     expenses() {
         let expense = 0;
         Transaction.all.forEach(transaction => {
@@ -55,6 +55,11 @@ const Transaction = {
             }
         })
         return expense;
+    },
+
+    safeBox(e){
+        let safe = 0;
+        console.log(Transactions.expense())
     },
 
     total() {
@@ -142,12 +147,13 @@ const Form = {
     // get safe values
     moneysafe: document.querySelector('input#amountsafe'),
 
+
     getValues(){
         return {
             description: Form.description.value,
             amount: Form.amount.value,
             date: Form.date.value,
-            moneysafe: Form.date.value
+            moneysafe: Form.moneysafe.value
         }
     },
 
@@ -167,16 +173,18 @@ const Form = {
     },
 
     formatValues(){
-        let {description, amount, date} = Form.getValues()
+        let {description, amount, date, moneysafe} = Form.getValues()
 
         amount = Utils.formatAmount(amount);
 
         date = Utils.formatDate(date)
 
+        moneysafe = Utils.formatAmount(moneysafe)
         return{
             description,
             amount,
-            date
+            date,
+            moneysafe
         }
     },
 
@@ -184,6 +192,7 @@ const Form = {
         Form.description.value = ''
         Form.amount.value = ''
         Form.date.value = ''
+        Form.moneysafe.value = ''
     },
 
     submit(event) {
@@ -201,8 +210,17 @@ const Form = {
 
     submitSafe(event) {
         event.preventDefault();
-
-        Form.validateFields(true);
+        try {
+            //Validar os campos
+            Form.validateFields(true);
+            //Formatar Valores
+            const transaction = Form.formatValues();
+            // Adicionar transação 
+            Transaction.safeBox(transaction.moneysafe)
+            console.log(transaction)
+        } catch (error) {
+            alert(error.message)
+        }
     }
 
 
