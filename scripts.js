@@ -57,22 +57,25 @@ const Transaction = {
         return expense;
     },
 
-    total() {
-        Transaction.safeBox()
+    total(value) {
         const total = Transaction.incomes() + Transaction.expenses();
+        //console.log(value)
         return total
     },
 
-    safeBox(transaction){
+    safeBox(value){
         let safe = 0
-            // parei aqui, o transaction não pode ser recebido aqui
-    //     Transaction.all.forEach(transaction => {
-    //         if( transaction.moneysafe > 0 ) {
-    //             safe += transaction.moneysafe;
-    //         }
-    //     })
-         return safe;
-     },
+        const valida = false
+        // parei aqui, o transaction não pode ser recebido aqui.
+
+        const resultTotal = Transaction.total()
+        if (resultTotal > 0) {
+            valida = true
+            //Transaction.total(value)
+        } else {
+            alert('Você deve estar com saldo positivo')
+        }
+      },
 
 
 }
@@ -205,7 +208,6 @@ const Form = {
     },
 
     clearFields(){
-        console.log(Transaction.safeBox())
 
         Form.description.value = ''
         Form.amount.value = ''
@@ -230,8 +232,8 @@ const Form = {
         event.preventDefault();
         try {
             Form.validateFields(true);//Validar os campos
-            const transaction = Form.formatValueSafe();  //Formatar Valores
-            Transaction.safeBox(transaction) // Adicionar transação
+            const value = Form.formatValueSafe();  //Formatar Valores
+            Transaction.safeBox(value) // Adicionar transação
             Form.clearFields(); // Apagar campos
             //Modal.CloseModalSafe(); //fecho Modal
             //para verificação
