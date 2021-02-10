@@ -57,14 +57,19 @@ const Transaction = {
         return expense;
     },
 
-    safeBox(e){
-        let safe = 0;
-        console.log(Transactions.expense())
+    total() {
+        const total = Transaction.incomes() + Transaction.expenses();
+        return total
     },
 
-    total() {
-        return Transaction.incomes() + Transaction.expenses();
-    }
+    safeBox(transaction){
+        let safe = transaction.moneysafe
+        
+        return console.log(Transaction.total() + safe)
+        
+    },
+
+
 }
 
 
@@ -143,10 +148,8 @@ const Form = {
     description: document.querySelector('input#description'),
     amount: document.querySelector('input#amount'),
     date: document.querySelector('input#date'),
-
     // get safe values
     moneysafe: document.querySelector('input#amountsafe'),
-
 
     getValues(){
         return {
@@ -216,8 +219,10 @@ const Form = {
             //Formatar Valores
             const transaction = Form.formatValues();
             // Adicionar transação 
-            Transaction.safeBox(transaction.moneysafe)
-            console.log(transaction)
+            Transaction.safeBox(transaction)
+            // Apagar campos
+            Form.clearFields();
+            Modal.CloseModalSafe();
         } catch (error) {
             alert(error.message)
         }
