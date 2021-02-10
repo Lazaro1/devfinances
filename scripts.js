@@ -58,16 +58,21 @@ const Transaction = {
     },
 
     total() {
+        Transaction.safeBox()
         const total = Transaction.incomes() + Transaction.expenses();
         return total
     },
 
     safeBox(transaction){
-        let safe = transaction.moneysafe
-        
-        return console.log(Transaction.total() + safe)
-        
-    },
+        let safe = 0
+            // parei aqui, o transaction não pode ser recebido aqui
+    //     Transaction.all.forEach(transaction => {
+    //         if( transaction.moneysafe > 0 ) {
+    //             safe += transaction.moneysafe;
+    //         }
+    //     })
+         return safe;
+     },
 
 
 }
@@ -107,6 +112,7 @@ const DOM =  {
         document.getElementById('incomeDisplay').innerHTML = Utils.formatCurrency(Transaction.incomes())
         document.getElementById('expenseDisplay').innerHTML = Utils.formatCurrency(Transaction.expenses())
         document.getElementById('totalDisplay').innerHTML = Utils.formatCurrency(Transaction.total())
+        document.getElementById('safeDisplay').innerHTML = Utils.formatCurrency(Transaction.safeBox())    
     },
 
     clearTransactions(){
@@ -145,10 +151,10 @@ const Utils = {
 }
 
 const Form = {
+    // Pega todos os valores dos campos
     description: document.querySelector('input#description'),
     amount: document.querySelector('input#amount'),
     date: document.querySelector('input#date'),
-    // get safe values
     moneysafe: document.querySelector('input#amountsafe'),
 
     getValues(){
@@ -160,6 +166,8 @@ const Form = {
         }
     },
 
+//    const CSSclass = transaction.amount > 0 ? "income" : "expense"
+
     validateFields(e) {
         const {description, amount, date, moneysafe} = Form.getValues()
         
@@ -168,7 +176,6 @@ const Form = {
                 throw new Error("Por favor, preencha todos os campos")
             } 
         }else{
-            console.log(e)
             if(description.trim() === "" || amount.trim() === "" || date.trim() === "") {
                 throw new Error("Por favor, preencha todos os campos")
             }
@@ -176,22 +183,30 @@ const Form = {
     },
 
     formatValues(){
-        let {description, amount, date, moneysafe} = Form.getValues()
+        let {description, amount, date} = Form.getValues()
 
         amount = Utils.formatAmount(amount);
 
         date = Utils.formatDate(date)
 
-        moneysafe = Utils.formatAmount(moneysafe)
         return{
             description,
             amount,
-            date,
-            moneysafe
+            date
         }
+    },
+    
+    formatValueSafe(){
+        let {moneysafe} = Form.getValues()
+
+        moneysafe = Utils.formatAmount(moneysafe)
+ 
+        return moneysafe 
     },
 
     clearFields(){
+        console.log(Transaction.safeBox())
+
         Form.description.value = ''
         Form.amount.value = ''
         Form.date.value = ''
@@ -201,11 +216,11 @@ const Form = {
     submit(event) {
         event.preventDefault();       
         try {
-            Form.validateFields();
-            const transaction = Form.formatValues();
-            Transaction.add(transaction)
-            Form.clearFields();
-            Modal.CloseModal();
+            Form.validateFields();  //entendido
+            const transaction = Form.formatValues(); // recebe objeto de valores formatados
+            Transaction.add(transaction) // manda objeto recebido para localstorage
+            Form.clearFields(); // apaga os campos 
+            Modal.CloseModal(); // fecha modal
         } catch (error) {
             alert(error.message)
         }
@@ -214,15 +229,12 @@ const Form = {
     submitSafe(event) {
         event.preventDefault();
         try {
-            //Validar os campos
-            Form.validateFields(true);
-            //Formatar Valores
-            const transaction = Form.formatValues();
-            // Adicionar transação 
-            Transaction.safeBox(transaction)
-            // Apagar campos
-            Form.clearFields();
-            Modal.CloseModalSafe();
+            Form.validateFields(true);//Validar os campos
+            const transaction = Form.formatValueSafe();  //Formatar Valores
+            Transaction.safeBox(transaction) // Adicionar transação
+            Form.clearFields(); // Apagar campos
+            //Modal.CloseModalSafe(); //fecho Modal
+            //para verificação
         } catch (error) {
             alert(error.message)
         }
