@@ -64,22 +64,29 @@ const Transaction = {
     },
 
     safeBox(value){
-        let safe = 0
-        const valida = false
-        // parei aqui, o transaction não pode ser recebido aqui.
-
-        const resultTotal = Transaction.total()
-        if (resultTotal > 0) {
-            valida = true
-            //Transaction.total(value)
-        } else {
-            alert('Você deve estar com saldo positivo')
+        let result = 0
+        if (value == 0) {
+            console.log('tá zerado') 
+        } else { 
+            result = value
+            console.log(result)
         }
-      },
 
+        return result
+    }
 
 }
 
+// const valida = false
+// parei aqui, o transaction não pode ser recebido aqui.
+//     const resultTotal = Transaction.total()
+//     if (resultTotal > 0) {
+//         valida = true
+//         //Transaction.total(value)
+//     } else {
+//         alert('Você deve estar com saldo positivo')
+//     }
+//   
 
 const DOM =  {
 
@@ -115,7 +122,7 @@ const DOM =  {
         document.getElementById('incomeDisplay').innerHTML = Utils.formatCurrency(Transaction.incomes())
         document.getElementById('expenseDisplay').innerHTML = Utils.formatCurrency(Transaction.expenses())
         document.getElementById('totalDisplay').innerHTML = Utils.formatCurrency(Transaction.total())
-        document.getElementById('safeDisplay').innerHTML = Utils.formatCurrency(Transaction.safeBox())    
+        //document.getElementById('safeDisplay').innerHTML = Utils.formatCurrency(Transaction.safeBox())    
     },
 
     clearTransactions(){
@@ -129,7 +136,7 @@ const Utils = {
         amount = Number(amount) * 100
         
 
-        return amount;
+        return Math.round(amount);
     },
 
     formatDate(date) {
@@ -235,7 +242,9 @@ const Form = {
             const value = Form.formatValueSafe();  //Formatar Valores
             Transaction.safeBox(value) // Adicionar transação
             Form.clearFields(); // Apagar campos
-            //Modal.CloseModalSafe(); //fecho Modal
+            Modal.CloseModalSafe(); //fecho Modal
+            App.reload()
+
             //para verificação
         } catch (error) {
             alert(error.message)
@@ -259,4 +268,4 @@ const App = {
     },
 }
 
-App.init()
+//App.init()
