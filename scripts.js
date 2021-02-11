@@ -58,13 +58,25 @@ const Transaction = {
     },
 
     total(value) {
+        const safeValue = value;
+        console.log(safeValue)
         const total = Transaction.incomes() + Transaction.expenses();
         
         return total
     },
 
     addSafeBox(transaction){
-        Transaction.all.push(transaction)
+        const result = Transaction.total() 
+        const safeValue = transaction.moneysafe
+
+        // console.log(result)
+        // console.log(safeValue)
+
+        if ( safeValue <= result) {
+            Transaction.all.push(transaction)            
+        } else {
+            alert('Não é possivel fazer inclusão, Seu saldo deve ser Positivo')
+        }
 
         App.reload()
     },
@@ -76,7 +88,7 @@ const Transaction = {
         Transaction.all.forEach(transaction => {
             result += transaction.moneysafe;
         })
-        console.log(result)
+        Transaction.total(result)
         return result
     }
 
