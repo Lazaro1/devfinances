@@ -59,34 +59,28 @@ const Transaction = {
 
     total(value) {
         const total = Transaction.incomes() + Transaction.expenses();
-        //console.log(value)
+        
         return total
     },
 
-    safeBox(value){
-        let result = 0
-        if (value == 0) {
-            console.log('tá zerado') 
-        } else { 
-            result = value
-            console.log(result)
-        }
+    addSafeBox(transaction){
+        Transaction.all.push(transaction)
 
+        App.reload()
+    },
+
+    safeBox(){
+        
+        let result = 0
+        
+        Transaction.all.forEach(transaction => {
+            result += transaction.moneysafe;
+        })
+        console.log(result)
         return result
     }
 
 }
-
-// const valida = false
-// parei aqui, o transaction não pode ser recebido aqui.
-//     const resultTotal = Transaction.total()
-//     if (resultTotal > 0) {
-//         valida = true
-//         //Transaction.total(value)
-//     } else {
-//         alert('Você deve estar com saldo positivo')
-//     }
-//   
 
 const DOM =  {
 
@@ -122,7 +116,7 @@ const DOM =  {
         document.getElementById('incomeDisplay').innerHTML = Utils.formatCurrency(Transaction.incomes())
         document.getElementById('expenseDisplay').innerHTML = Utils.formatCurrency(Transaction.expenses())
         document.getElementById('totalDisplay').innerHTML = Utils.formatCurrency(Transaction.total())
-        //document.getElementById('safeDisplay').innerHTML = Utils.formatCurrency(Transaction.safeBox())    
+        document.getElementById('safeDisplay').innerHTML = Utils.formatCurrency(Transaction.safeBox())    
     },
 
     clearTransactions(){
@@ -207,11 +201,11 @@ const Form = {
     },
     
     formatValueSafe(){
-        let {moneysafe} = Form.getValues()
+        let {moneysafe, date} = Form.getValues()
 
         moneysafe = Utils.formatAmount(moneysafe)
  
-        return moneysafe 
+        return {moneysafe}
     },
 
     clearFields(){
@@ -239,8 +233,8 @@ const Form = {
         event.preventDefault();
         try {
             Form.validateFields(true);//Validar os campos
-            const value = Form.formatValueSafe();  //Formatar Valores
-            Transaction.safeBox(value) // Adicionar transação
+            const transaction = Form.formatValueSafe();  //Formatar Valores
+            Transaction.addSafeBox(transaction) // Adicionar transação
             Form.clearFields(); // Apagar campos
             Modal.CloseModalSafe(); //fecho Modal
             App.reload()
