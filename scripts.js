@@ -59,7 +59,7 @@ const Transaction = {
 
     total(value) {
         const safeValue = value;
-        console.log(safeValue)
+
         const total = Transaction.incomes() + Transaction.expenses();
         
         return total
@@ -69,27 +69,24 @@ const Transaction = {
         const result = Transaction.total() 
         const safeValue = transaction.moneysafe
 
-        // console.log(result)
-        // console.log(safeValue)
-
         if ( safeValue <= result) {
             Transaction.all.push(transaction)            
         } else {
             alert('Não é possivel fazer inclusão, Seu saldo deve ser Positivo')
         }
 
-        App.reload()
+        Transaction.safeBox();
     },
 
     safeBox(){
-        
+       
         let result = 0
         
         Transaction.all.forEach(transaction => {
             result += transaction.moneysafe;
         })
-        Transaction.total(result)
-        return result
+
+        return result;
     }
 
 }
@@ -199,21 +196,23 @@ const Form = {
     },
 
     formatValues(){
-        let {description, amount, date} = Form.getValues()
+        let {description, amount, date, moneysafe} = Form.getValues()
 
         amount = Utils.formatAmount(amount);
 
         date = Utils.formatDate(date)
 
+        //moneysafe = Utils.formatAmount(moneysafe);
+
         return{
             description,
             amount,
-            date
+            date,     
         }
     },
     
     formatValueSafe(){
-        let {moneysafe, date} = Form.getValues()
+        let {moneysafe} = Form.getValues()
 
         moneysafe = Utils.formatAmount(moneysafe)
  
@@ -256,8 +255,6 @@ const Form = {
             alert(error.message)
         }
     }
-
-
 }
 
 const App = {
